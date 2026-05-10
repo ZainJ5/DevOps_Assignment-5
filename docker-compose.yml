@@ -11,7 +11,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   backend:
-    image: ${ECR_REGISTRY}/devops-backend:latest
+    image: ${ECR_REGISTRY}/backend:latest
     ports:
       - "3000:3000"
     depends_on:
@@ -20,7 +20,7 @@ services:
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
 
   frontend:
-    image: ${ECR_REGISTRY}/devops-frontend:latest
+    image: ${ECR_REGISTRY}/frontend:latest
     ports:
       - "4173:4173"
     depends_on:
