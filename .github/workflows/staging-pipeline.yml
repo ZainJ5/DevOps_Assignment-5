@@ -91,7 +91,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Staging Pipeline Status - ${{ job.status }}
-          to: instructor-email@example.com, ${{ github.actor }}@users.noreply.github.com
+          to: zainjamshaid55@gmail.com, ${{ github.actor }}@users.noreply.github.com
           from: GitHub Actions
           body: |
             The staging workflow run resulted in: ${{ job.status }}.
