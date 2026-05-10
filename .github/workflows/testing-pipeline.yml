@@ -38,6 +38,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Copy Deployment Files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_TESTING_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.yml" 
+          target: "~/DevOps_Assignment-5"
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -49,23 +58,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, Tag, and Push Frontend Image
+      - name: Build and Push Images
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: frontend
-          IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./frontend
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      - name: Build, Tag, and Push Backend Image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: backend
-          IMAGE_TAG: latest
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./backend
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/frontend:latest ./frontend
+          docker push $ECR_REGISTRY/frontend:latest
+          docker build -t $ECR_REGISTRY/backend:latest ./backend
+          docker push $ECR_REGISTRY/backend:latest
 
       - name: Deploy to Testing EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -84,7 +84,7 @@ jobs:
     if: always() 
     runs-on: ubuntu-latest
     steps:
-      - name: Send Email Notification
+      - name: Send Email Notification (Task 3.2.4)
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -92,8 +92,11 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Testing Pipeline Status - ${{ needs.deploy-to-testing.result }}
-          to: zainjamshaid55@gmail.com
+          to: zainjamshaid55@gmail.com, sajid.ali@giki.edu.pk 
           from: GitHub Actions
           body: |
-            Testing Pipeline status: ${{ needs.deploy-to-testing.result }}
-            QA can access the app at: http://${{ secrets.EC2_TESTING_HOST }}:4173
+            The Testing Pipeline workflow resulted in: ${{ needs.deploy-to-testing.result }}.
+            
+            QA Details:
+            The application is accessible at: http://${{ secrets.EC2_TESTING_HOST }}:4173
+            Developer: Zain Jamshaid
