@@ -20,7 +20,7 @@ jobs:
       - name: Install Frontend Dependencies & Lint/Test
         working-directory: ./frontend
         run: |
-          npm ci
+          npm i
           npm run lint --if-present
           npm test -- --passWithNoTests
 
