@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 import SignupForm from '../components/SignupForm';
 import { useAuth } from '../context/AuthContext';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 
 const AuthPage = () => {

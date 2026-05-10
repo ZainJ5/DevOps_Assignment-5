@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, Send, Loader2, X, ChevronDown, Share2, ThumbsUp, Newspaper, Clock, RefreshCw, ExternalLink } from 'lucide-react';
 import { sendAIMessage } from '../services/api';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import TimeAgo from 'react-timeago';
 import ReactMarkdown from 'react-markdown';
