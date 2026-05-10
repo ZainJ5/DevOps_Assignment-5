@@ -11,7 +11,7 @@ export const getToken = () => {
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const payload = JSON.parse(window.atob(base64));
       return payload.role === 'admin';
-    } catch (error) {
+    } catch {
       return false;
     }
   };

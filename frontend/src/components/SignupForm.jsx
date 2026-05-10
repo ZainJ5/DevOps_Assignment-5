@@ -71,7 +71,7 @@ const SignupForm = ({ onSwitch }) => {
       role: 'user' 
     };
     
-    const { success, error, user } = await register(userData);
+    const { success, error } = await register(userData);
     
     if (success) {
       setRegistrationSuccess(true);

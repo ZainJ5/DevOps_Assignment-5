@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { isAdmin } from '../services/auth';
-import { getNotifications } from '../services/api';
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
   const location = useLocation();
-  const [notifications, setNotifications] = useState([]);
+  const [notifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const admin = isAdmin();

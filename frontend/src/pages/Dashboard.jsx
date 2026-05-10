@@ -9,7 +9,7 @@ const Dashboard = () => {
   const [articles, setArticles] = useState([]);
   const [bookmarkedArticleIds, setBookmarkedArticleIds] = useState(new Set());
   const [activeCategory, setActiveCategory] = useState('all');
-  const [preferences, setPreferences] = useState(null);
+  const [, setPreferences] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [darkMode, setDarkMode] = useState(false);

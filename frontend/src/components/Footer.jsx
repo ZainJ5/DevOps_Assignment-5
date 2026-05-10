@@ -13,7 +13,7 @@ const Footer = () => {
     if (!email) return;
     
     try {
-      const response = await subscribeToNewsletter(email);
+      await subscribeToNewsletter(email);
       setSubscriptionStatus({ 
         message: 'Successfully subscribed! Please check your email.', 
         error: false 

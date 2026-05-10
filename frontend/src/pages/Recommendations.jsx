@@ -18,7 +18,7 @@ const Recommendations = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [bookmarkedArticleIds, setBookmarkedArticleIds] = useState(new Set());
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode] = useState(false);
 
   useEffect(() => {
     const fetchUserInteractions = async () => {
