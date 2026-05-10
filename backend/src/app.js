@@ -20,7 +20,11 @@ const newsletterRoutes = require('./routes/newsletter.routes');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',       
+  origin: [
+          'http://139.59.34.214:4173',
+          'http://localhost:4173',
+          'http://localhost:5173',
+          ],       
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   credentials: true                     
 }));
@@ -41,15 +45,15 @@ app.use('/api/ai', airoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 
-sequelize.authenticate()
+sequelize.sync({ alter: true })
   .then(() => {
-    console.log('Database connected');
+    console.log('Database connected and tables synchronized!');
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
   .catch(err => {
-    console.error('Database connection error:', err);
+    console.error('Database connection or sync error:', err);
     process.exit(1);
   });

@@ -1,6 +1,6 @@
 import { getToken } from './auth';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://139.59.34.214:3000/api';
 
 const fetchWithAuth = async (endpoint, options = {}) => {
   const token = getToken();

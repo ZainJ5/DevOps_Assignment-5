@@ -1,6 +1,6 @@
-const { GoogleGenAI } = require("@google/genai");
-
-const ai = new GoogleGenAI({ apiKey: process.env.gemini_api_key });
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.gemini_api_key);
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 exports.getairesponse = async (req, res) => {
     try {
@@ -10,12 +10,9 @@ exports.getairesponse = async (req, res) => {
             return res.status(400).json({ error: 'No message provided' });
         }
         
-        const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash",
-            contents: message, 
-        });
+const result = await model.generateContent(message);
+const responseText = result.response.text();
 
-        const responseText = response.text;
         
         return res.status(200).json({ 
             text: responseText 
