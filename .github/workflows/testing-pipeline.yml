@@ -69,13 +69,29 @@ jobs:
 
       - name: Deploy to Testing EC2
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
         with:
           host: ${{ secrets.EC2_TESTING_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: ECR_REGISTRY,DB_USER,DB_PASSWORD,DB_NAME
           script: |
             cd ~/DevOps_Assignment-5
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+            
+            # Create/Overwrite .env file so docker-compose can read the variables
+            echo "ECR_REGISTRY=${ECR_REGISTRY}" > .env
+            echo "DB_USER=${DB_USER}" >> .env
+            echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+            echo "DB_NAME=${DB_NAME}" >> .env
+            
+            # Login to ECR
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+            
+            # Pull and Update
             docker compose pull
             docker compose up -d --force-recreate
 
@@ -96,7 +112,3 @@ jobs:
           from: GitHub Actions
           body: |
             The Testing Pipeline workflow resulted in: ${{ needs.deploy-to-testing.result }}.
-            
-            QA Details:
-            The application is accessible at: http://${{ secrets.EC2_TESTING_HOST }}:4173
-            Developer: Zain Jamshaid
