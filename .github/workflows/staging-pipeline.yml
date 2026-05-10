@@ -20,14 +20,14 @@ jobs:
       - name: Install Frontend Dependencies & Lint/Test
         working-directory: ./frontend
         run: |
-          npm i
+          npm install
           npm run lint --if-present
           npm test -- --passWithNoTests
 
       - name: Install Backend Dependencies & Lint/Test
         working-directory: ./backend
         run: |
-          npm ci
+          npm install
           npm run lint --if-present
           npm test -- --passWithNoTests
 
@@ -74,6 +74,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            cd ~/DevOps_Assignment-5
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
             docker compose pull
             docker compose up -d --force-recreate
@@ -90,9 +91,9 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Staging Pipeline Status - ${{ job.status }}
+          subject: Staging Pipeline Status - ${{ needs.deploy-to-staging.result }}
           to: zainjamshaid55@gmail.com
           from: GitHub Actions
           body: |
-            The staging workflow run resulted in: ${{ job.status }}.
-            If successful, users can access the application at: http://${{ secrets.EC2_STAGING_HOST }}:4173
+            Staging Pipeline status: ${{ needs.deploy-to-staging.result }}
+            Users can access the app at: http://${{ secrets.EC2_STAGING_HOST }}:4173
