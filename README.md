@@ -4,8 +4,7 @@ A full-stack **News Aggregator** web application, containerized with Docker and 
 through a complete **GitHub Actions CI/CD pipeline** that builds, tests, and deploys to
 **AWS (ECR + EC2)** across dedicated **testing** and **staging** environments.
 
-> Course: **CS316 – DevOps** · Maintainers: **Zain Jamshaid** ([@ZainJ5](https://github.com/ZainJ5)) · Contributor
-
+> Course: **CS316 – DevOps** 
 ---
 
 ## ✨ Features
